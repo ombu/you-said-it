@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="style.css" />
+    <title>{% block title %}{% endblock %} - My Webpage</title>
+    {% endblock %}
+</head>
+<body>
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+    <footer>
+        {% block footer %}
+        &copy; Copyright {{ now.year }} by <a href="http://ombuweb.com/">
+            OMBU</a>.
+        {% endblock %}
+    </footer>
+</body>
