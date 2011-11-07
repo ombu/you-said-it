@@ -6,22 +6,28 @@ from models.log import Log as LogModel
 env = Environment(loader=FileSystemLoader('templates'))
 env.globals['now'] = datetime.now()
 
-class Log(object):
+class Api(object):
 
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def log(self, **kwargs):
+        config = cherrypy.request.app.config['/']
+        lm = LogModel(config['logs_dir'], config['channel']);
+        return lm.get(user="foo")
+
+class Log(object):
     @cherrypy.expose
     def index(self):
         tmpl = env.get_template('log.html')
         nav = Nav.get()
-        content = LogModel().get()
-        return tmpl.render(navigation=nav, content=content)
-
-    # @cherrypy.expose
-    # def archive(self, year, month=None, day=None):
-    #     return "Hello Bar! %s %s %s" % (year, month, day)
+        config = cherrypy.request.app.config['/']
+        lm = LogModel(config['logs_dir'], config['channel']);
+        return tmpl.render(navigation=nav)
 
 class Root(object):
 
     log = Log()
+    api = Api()
 
     @cherrypy.expose
     def index(self):
@@ -34,4 +40,4 @@ class Nav(object):
     def get():
         return [ {'name': 'View Log', 'href': 'log'} ]
 
-cherrypy.quickstart(Root())
+cherrypy.quickstart(Root(),config='config.ini')

@@ -3,5 +3,25 @@
 {% block title %}The Log{% endblock %}
 
 {% block content %}
-Foo Bar
+<div id="toolbar">OMBU IRC</div>
+<div id="entries"></div>
+{% endblock %}
+
+{% block js %}
+<script>
+    dojo.require('dojo.store.JsonRest');
+    dojo.addOnLoad(function() {
+        var store, str;
+        str = "<a href='#yesterday'>Load another day</a><dl>";
+        store = new dojo.store.JsonRest({target:"/api/log/"});
+        store.query({category:"qux"}).then(function(results){
+            for(var i=0, l=results.length; i<l; i++) {
+                str += dojo.replace("<dt>{3}</dt><dd>{4}</dd>",
+                results[i]);
+            }
+            str += "</dl><a href='#tomorrow'>Load another day</a>";
+            dojo.byId('entries').innerHTML = str;
+        });
+    });
+</script>
 {% endblock %}

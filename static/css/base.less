@@ -1,0 +1,41 @@
+@bg: #002b36;
+@fg: #839496;
+@fg1: #b58900;
+@fg2: #dc322f;
+@gray: #ccc;
+@top: 30px;
+
+body { 
+    background-color: @bg;
+    color: @fg;
+    font-size: 80%;
+    font-family: 'Menlo', 'Monaco', 'Lucida Grande', 'Helvetica Neue', 'Helvetica', 'sans';
+}
+
+a {
+    color: @fg2;
+}
+
+dt {
+    margin-top: 1em;
+    color: @fg1; 
+    display: inline-block;
+    padding: 5px;
+}
+
+dd {
+}
+
+#toolbar {
+    position: fixed;
+    top:0;
+    height: @top;
+    width: 100%;
+    background-color: @gray;
+    color: #111;
+    border-bottom: 2px solid @gray;
+}
+
+#entries {
+    margin: @top * 1.2 2em 0 2em;
+}

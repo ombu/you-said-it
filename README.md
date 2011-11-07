@@ -5,7 +5,7 @@ You Said It
 
 ## License
 
-Copyright (c) 2011 OMBU martin@ombuweb.com, except where otherwise
+Copyright 2011 OMBU <martin@ombuweb.com>, except where otherwise
 noted.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
