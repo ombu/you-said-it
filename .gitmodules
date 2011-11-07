@@ -1,0 +1,3 @@
+[submodule "static/css/toolkit-less-tools"]
+	path = static/css/toolkit-less-tools
+	url = git@github.com:ombu/toolkit-less-tools.git
