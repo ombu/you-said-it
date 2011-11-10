@@ -3,25 +3,17 @@
 {% block title %}The Log{% endblock %}
 
 {% block content %}
-<div id="toolbar">OMBU IRC</div>
+<div id="toolbar">You Said It!</div>
 <div id="entries"></div>
 {% endblock %}
 
 {% block js %}
 <script>
-    dojo.require('dojo.store.JsonRest');
-    dojo.addOnLoad(function() {
-        var store, str;
-        str = "<a href='#yesterday'>Load another day</a><dl>";
-        store = new dojo.store.JsonRest({target:"/api/log/"});
-        store.query({category:"qux"}).then(function(results){
-            for(var i=0, l=results.length; i<l; i++) {
-                str += dojo.replace("<dt>{3}</dt><dd>{4}</dd>",
-                results[i]);
-            }
-            str += "</dl><a href='#tomorrow'>Load another day</a>";
-            dojo.byId('entries').innerHTML = str;
-        });
-    });
+    var djConfig = {
+        baseUrl: "/",
+        modulePaths: { 'ombu': 'static/js' }
+    };
 </script>
+<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.6.1/dojo/dojo.xd.js" type="text/javascript"></script>
+<script type="text/javascript">dojo.require('ombu.log');</script>
 {% endblock %}

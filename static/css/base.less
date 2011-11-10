@@ -1,9 +1,11 @@
+@import "toolkit-less-tools/less-tools.less";
 @bg: #002b36;
 @fg: #839496;
 @fg1: #b58900;
 @fg2: #dc322f;
 @gray: #ccc;
 @top: 30px;
+@marker-width: 150px;
 
 body { 
     background-color: @bg;
@@ -16,26 +18,52 @@ a {
     color: @fg2;
 }
 
-dt {
-    margin-top: 1em;
-    color: @fg1; 
-    display: inline-block;
-    padding: 5px;
-}
+dl.day {
+    border-top: 5px solid black;
 
-dd {
+    dt {
+        width: 10em;
+        text-align: right;
+        margin-top: 0.5em;
+        color: @fg1;
+        display: inline-block;
+        padding: 5px;
+    }
+
+    dd {
+        margin-top: -1.6em;
+        margin-left: 11em;
+    }
 }
 
 #toolbar {
     position: fixed;
     top:0;
-    height: @top;
+    left: 0;
     width: 100%;
-    background-color: @gray;
+    .basic-gradient-darken();
     color: #111;
     border-bottom: 2px solid @gray;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-shadow: 0 1px 0 lighten(@gray, 20%);
+    color: darken(@gray, 50%);
+    padding: 0.3em 1em;
 }
 
 #entries {
-    margin: @top * 1.2 2em 0 2em;
+    margin: @top * 1.2 2em 0 (@marker-width - 10px);
+    width: 60em;
+}
+
+#marker {
+    width: @marker-width;
+    background-color: rgba(20,20,20, 0.3);
+    .border-radius();
+    position: fixed;
+    min-height: 2em;
+    padding: 0.5em;
+    top: 40%;
+    left: 20px;
 }

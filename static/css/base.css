@@ -1,3 +1,16 @@
+/* Import this file if you want all the goodies, or just import the individual sections you need */
+.clearfix:before, .clearfix:after {
+  content: "";
+  display: table;
+}
+.clearfix:after {
+  clear: both;
+}
+.clearfix {
+  zoom: 1;
+}
+/* For image replacement */
+/* @todo Expand above gradient mixin to allow other non-linear styles */
 body {
   background-color: #002b36;
   color: #839496;
@@ -7,21 +20,61 @@ body {
 a {
   color: #dc322f;
 }
-dt {
-  margin-top: 1em;
+dl.day {
+  border-top: 5px solid black;
+}
+dl.day dt {
+  width: 10em;
+  text-align: right;
+  margin-top: 0.5em;
   color: #b58900;
   display: inline-block;
   padding: 5px;
 }
+dl.day dd {
+  margin-top: -1.6em;
+  margin-left: 11em;
+}
 #toolbar {
   position: fixed;
   top: 0;
-  height: 30px;
+  left: 0;
   width: 100%;
-  background-color: #cccccc;
+  background: #cccccc;
+  background: -webkit-gradient(linear, left top, left bottom, from(#cccccc), to(#b3b3b3));
+  background: -webkit-linear-gradient(#cccccc, #b3b3b3);
+  background: -moz-linear-gradient(center top, #cccccc 0%, #b3b3b3 100%);
+  background: -moz-gradient(center top, #cccccc 0%, #b3b3b3 100%);
+  -pie-background: linear-gradient(#cccccc, #b3b3b3);
+  background: linear-gradient(#cccccc, #b3b3b3);
   color: #111;
   border-bottom: 2px solid #cccccc;
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-shadow: 0 1px 0 #ffffff;
+  color: #4d4d4d;
+  padding: 0.3em 1em;
 }
 #entries {
-  margin: 36px 2em 0 2em;
+  margin: 36px 2em 0 140px;
+  width: 60em;
+}
+#marker {
+  width: 150px;
+  background-color: rgba(20, 20, 20, 0.3);
+  -webkit-background-clip: padding-box;
+  -webkit-border-bottom-left-radius: 10px;
+  -webkit-border-bottom-right-radius: 10px;
+  -webkit-border-top-left-radius: 10px;
+  -webkit-border-top-right-radius: 10px;
+  -moz-background-clip: padding-box;
+  -moz-border-radius: 10px 10px 10px 10px;
+  border-radius: 10px 10px 10px 10px;
+  background-clip: padding-box;
+  position: fixed;
+  min-height: 2em;
+  padding: 0.5em;
+  top: 40%;
+  left: 20px;
 }

@@ -21,7 +21,6 @@ class Log(object):
         tmpl = env.get_template('log.html')
         nav = Nav.get()
         config = cherrypy.request.app.config['/']
-        lm = LogModel(config['logs_dir'], config['channel']);
         return tmpl.render(navigation=nav)
 
 class Root(object):
