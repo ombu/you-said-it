@@ -5,10 +5,11 @@
 {% block content %}
 <div id="toolbar">You Said It!</div>
 <div id="search"><input type="text" placeholder="Search"></input></div>
-<div id="search-results">
+<div id="search-results" class="active">
+    <label>14 matches:</label>
     <ul>
         {% for item in range(1, 20) %}
-        <li>A result</li>
+        <li tabindex="1">A result</li>
         {% endfor %}
     </ul>
 </div>

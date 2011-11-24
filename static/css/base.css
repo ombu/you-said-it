@@ -20,6 +20,14 @@ body {
 a {
   color: #dc322f;
 }
+label {
+  color: #cccccc;
+  font-size: 90%;
+  line-height: 200%;
+  padding: 0.5em;
+  font-style: italic;
+  font-family: 'Lucida Grande', 'Helvetica Neue', 'Helvetica', 'sans';
+}
 dl.day {
   background-color: #002b36;
   margin: 2em 0;
@@ -124,7 +132,7 @@ dl.day.inserted {
   background-color: #fff;
   z-index: 1;
   width: 60em;
-  top: 25px;
+  top: 30px;
   right: 5%;
   position: fixed;
   -webkit-box-shadow: 2px 2px 2px #000000;
@@ -132,13 +140,13 @@ dl.day.inserted {
   box-shadow: 2px 2px 2px #000000;
   max-height: 0em;
   overflow: auto;
-  border-bottom: 5px solid #999999;
+  border-bottom: 3px solid #999999;
   -moz-transition: max-height 0.2s ease-in;
   -webkit-transition: max-height 0.2s ease-in;
   transition: max-height 0.2s ease-in;
 }
 #search-results.active {
-  max-height: 14em;
+  max-height: 12em;
 }
 #search-results ul {
   margin: 0;
@@ -154,6 +162,12 @@ dl.day.inserted {
   background-color: #eff5fd;
 }
 #search-results li:hover {
+  cursor: hand;
+}
+#search-results li:focus {
+  outline: none;
   background-color: #c2d9f7;
-  cursor: pointer;
+}
+#search-results .tools {
+  padding: 1em;
 }

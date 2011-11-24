@@ -10,16 +10,28 @@
 @large: 16px;
 @medium: 12px;
 @small: 11px;
+@serif: Georgia;
+@sans: 'Lucida Grande', 'Helvetica Neue', 'Helvetica', 'sans';
+@mono: 'Menlo', 'Monaco', 'Lucida Grande', 'Helvetica Neue', 'Helvetica', 'sans';
 
 body {
     background-image: url(/static/img/cotton-fabric-rough.jpg);
     color: @fg;
     font-size: 80%;
-    font-family: 'Menlo', 'Monaco', 'Lucida Grande', 'Helvetica Neue', 'Helvetica', 'sans';
+    font-family: @mono; 
 }
 
 a {
     color: @fg2;
+}
+
+label {
+    color: lighten(@gray, 0%);
+    font-size: 90%;
+    line-height: 200%;
+    padding: 0.5em;
+    font-style: italic;
+    font-family: @sans;
 }
 
 dl.day {
@@ -105,11 +117,11 @@ dl.day {
 
 }
 #search-results {
-    @border-width: 5px;
+    @border-width: 3px;
     background-color: #fff;
     z-index: 1;
     width: 60em;
-    top: @top - @border-width;
+    top: @top;
     right: 5%;
     position: fixed;
     .box-shadow(2px 2px 2px #000);
@@ -118,7 +130,7 @@ dl.day {
     border-bottom: @border-width solid darken(@gray, 20%);
     .transition(max-height, 0.2s);
     &.active {
-        max-height: 14em;
+        max-height: 12em;
     }
     ul {
         margin:0;
@@ -133,8 +145,14 @@ dl.day {
             background-color: @blue;
         }
         &:hover {
-            background-color: darken(@blue, 10%);
-            cursor: pointer;
+            cursor: hand;
         }
+        &:focus {
+            outline: none;
+            background-color: darken(@blue, 10%);
+        }
+    }
+    .tools {
+        padding: 1em;
     }
 }
