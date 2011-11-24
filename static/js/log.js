@@ -4,9 +4,7 @@ dojo.require('dojo.window');
 
 dojo.addOnLoad(function() {
 
-    var log, viewport_size, entries_height;
-
-    log = new Log({
+    var log = new Log({
         container: dojo.byId('entries'),
         paginator: InfinitePaginator,
         storeUrl: '/api/log/'
@@ -14,6 +12,7 @@ dojo.addOnLoad(function() {
     log.load({callback: handle_viewport_resize});
 
     function handle_viewport_resize() {
+        var viewport_size, entries_height;
         viewport_size = dojo.window.getBox().h;
         entries_height = dojo.coords(dojo.byId('entries'), false).h;
     }
@@ -28,7 +27,7 @@ InfinitePaginator = function(domNode, callbackTop, callbackBottom) {
     this.domNode = domNode;
     this.callbackTop = callbackTop;
     this.callbackBottom = callbackBottom;
-    dojo.connect(window, 'onscroll', this, this.handle_scroll);
+    this.scrollListener = dojo.connect(window, 'onscroll', this, this.handle_scroll);
 };
 
 /**
@@ -48,6 +47,7 @@ InfinitePaginator.prototype.onReachEnd = function() {
 };
 
 InfinitePaginator.prototype.handle_scroll = function() {
+    var reached_bottom, reached_top;
     reached_bottom = Boolean(window.pageYOffset + this.viewport_height -
             this.nodeHeight > 0);
     if (reached_bottom) {
@@ -70,8 +70,7 @@ InfinitePaginator.prototype.refresh = function() {
  */
 getCenterNode = function(nodeList) {
 
-    var cn = getCenterNode,
-        center_element; //, reached_bottom, reached_top;
+    var cn = getCenterNode;
 
     if (typeof cn.nodeList !== 'undefined' && cn.nodeList != nodeList) {
         cn.positions = dojo.map(nodeList.position(false),
@@ -103,12 +102,30 @@ getCenterNode = function(nodeList) {
 Log = function(opts) {
     this.store = new dojo.store.JsonRest({target: opts.storeUrl});
     this.container = opts.container;
-    this.paginator = new opts.paginator(this.container, this.loadDayBefore, this.loadDayBefore);
+    this.paginator = new opts.paginator(this.container, this.loadDayBefore,
+            this.loadDayBefore);
     this.entries = [];
-    dojo.connect(window, 'onscroll', this, this.handle_scroll);
-    dojo.connect(this.paginator, 'onReachedStart', this, this.loadDayBefore);
-    dojo.connect(this.paginator, 'onReachedEnd', this, this.loadDayAfter);
+    this.listeners = [];
+    this.connectListeners();
 };
+
+Log.prototype.connectListeners = function() {
+    if(this.listeners.length) {
+        return;
+    }
+    this.listeners.push(dojo.connect(window, 'onscroll', this,
+                this.handle_scroll));
+    this.listeners.push(dojo.connect(this.paginator, 'onReachedStart', this,
+                this.loadDayBefore));
+    this.listeners.push(dojo.connect(this.paginator, 'onReachedEnd', this,
+                this.loadDayAfter));
+}
+
+Log.prototype.disconnectListeners = function() {
+    while(this.listeners.length) {
+        dojo.disconnect(this.listeners.pop());
+    }
+}
 
 Log.prototype.loadDayBefore = function() {
     this.load({pos: 'first'});
@@ -119,14 +136,11 @@ Log.prototype.loadDayAfter = function() {
 }
 
 Log.prototype.load = function(obj) {
-    var opts = {}
+    var opts = {}, fx;
     opts = dojo.mixin(opts, obj);
-    var fx =  dojo.hitch(this, function(data) {
-        this.handle_loaded(data, obj.pos);
-    });
-    this.store.query()
-    .then(fx)
-    .then(function() {
+    fx = dojo.hitch(this, function(data) { this.handle_loaded(data, obj.pos) });
+    this.disconnectListeners();
+    this.store.query().then(fx).then(function() {
         if (typeof obj.callback === 'function') {
             obj.callback();
         }
@@ -134,34 +148,35 @@ Log.prototype.load = function(obj) {
 };
 
 Log.prototype.handle_loaded = function(data, position) {
+    var str = '';
     if(typeof position === 'undefined') {
         position = 'last';
     }
-    console.log(position);
-    var str = '';
     for (var i = 0, l = data.length; i < l; i++) {
         data[i][2] = new Date(data[i][2] * 1000);
         str += dojo.replace("<dt title='{2}'>{3}</dt><dd>{4}</dd>",
         data[i]);
     }
-    dojo.create('dl', {className: 'day', innerHTML: str}, this.container, position);
+    dojo.create('dl', {className: 'day ', innerHTML: str}, this.container,
+            position);
     this.entries = dojo.query('dt', this.container);
     this.updateMarker();
     this.paginator.refresh();
+    this.connectListeners();
 };
 
 Log.prototype.handle_scroll = function() {
-    var center_el = getCenterNode(dojo.query('dt', this.container));
+    var center_el, date
+    center_el = getCenterNode(dojo.query('dt', this.container));
     if (center_el) {
-        //dojo.query('#entries dt').style('border', 'none');
-        //dojo.style(center_el, 'border', '1px solid green');
-        var date = dojo.attr(center_el, 'title');
+        date = dojo.attr(center_el, 'title');
         this.markerNode.innerHTML = date;
     }
 };
 
 Log.prototype.updateMarker = function(data) {
     if (dojo.query('#marker').length == 0) {
-        this.markerNode = dojo.create('div', {id: 'marker'}, dojo.body(), 'first');
+        this.markerNode = dojo.create('div', {id: 'marker'}, dojo.body(),
+                'first');
     }
 };

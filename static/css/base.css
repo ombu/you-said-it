@@ -12,7 +12,7 @@
 /* For image replacement */
 /* @todo Expand above gradient mixin to allow other non-linear styles */
 body {
-  background-color: #002b36;
+  background-image: url(/static/img/cotton-fabric-rough.jpg);
   color: #839496;
   font-size: 80%;
   font-family: 'Menlo', 'Monaco', 'Lucida Grande', 'Helvetica Neue', 'Helvetica', 'sans';
@@ -21,7 +21,12 @@ a {
   color: #dc322f;
 }
 dl.day {
-  border-top: 5px solid black;
+  background-color: #002b36;
+  margin: 2em 0;
+  padding: 2em 2em 2em 1em;
+  -webkit-box-shadow: 2px 2px 7px #000000;
+  -moz-box-shadow: 2px 2px 7px #000000;
+  box-shadow: 2px 2px 7px #000000;
 }
 dl.day dt {
   width: 10em;
@@ -34,6 +39,10 @@ dl.day dt {
 dl.day dd {
   margin-top: -1.6em;
   margin-left: 11em;
+}
+dl.day.inserted {
+  position: absolute;
+  left: -99999px;
 }
 #toolbar {
   position: fixed;
@@ -55,10 +64,12 @@ dl.day dd {
   text-shadow: 0 1px 0 #ffffff;
   color: #4d4d4d;
   padding: 0.3em 1em;
+  z-index: 2;
 }
 #entries {
-  margin: 36px 2em 0 140px;
   width: 60em;
+  right: 5%;
+  position: absolute;
 }
 #marker {
   width: 150px;
@@ -72,9 +83,77 @@ dl.day dd {
   -moz-border-radius: 10px 10px 10px 10px;
   border-radius: 10px 10px 10px 10px;
   background-clip: padding-box;
+  text-shadow: 2px 3px 1px #000;
+  color: #cccccc;
   position: fixed;
   min-height: 2em;
   padding: 0.5em;
   top: 40%;
   left: 20px;
+}
+#search {
+  position: fixed;
+  right: 5%;
+  top: 4px;
+  z-index: 2;
+}
+#search input {
+  width: 25em;
+  border: 1px solid #cccccc;
+  border-bottom: 1px solid #d9d9d9;
+  border-top: 1px solid #bfbfbf;
+  padding: 3px 6px ;
+  -webkit-background-clip: padding-box;
+  -webkit-border-bottom-left-radius: 6px;
+  -webkit-border-bottom-right-radius: 6px;
+  -webkit-border-top-left-radius: 6px;
+  -webkit-border-top-right-radius: 6px;
+  -moz-background-clip: padding-box;
+  -moz-border-radius: 6px 6px 6px 6px;
+  border-radius: 6px 6px 6px 6px;
+  background-clip: padding-box;
+  opacity: 0.6;
+  -moz-transition: opacity 0.2s ease-in;
+  -webkit-transition: opacity 0.2s ease-in;
+  transition: opacity 0.2s ease-in;
+}
+#search input:hover, #search input:focus {
+  opacity: 1;
+}
+#search-results {
+  background-color: #fff;
+  z-index: 1;
+  width: 60em;
+  top: 25px;
+  right: 5%;
+  position: fixed;
+  -webkit-box-shadow: 2px 2px 2px #000000;
+  -moz-box-shadow: 2px 2px 2px #000000;
+  box-shadow: 2px 2px 2px #000000;
+  max-height: 0em;
+  overflow: auto;
+  border-bottom: 5px solid #999999;
+  -moz-transition: max-height 0.2s ease-in;
+  -webkit-transition: max-height 0.2s ease-in;
+  transition: max-height 0.2s ease-in;
+}
+#search-results.active {
+  max-height: 14em;
+}
+#search-results ul {
+  margin: 0;
+  padding-left: 0em;
+}
+#search-results li {
+  font-size: 11px;
+  line-height: 170%;
+  padding-left: 2em;
+  list-style: none;
+}
+#search-results li:nth-child(2n+1) {
+  background-color: #eff5fd;
+}
+#search-results li:hover {
+  background-color: #c2d9f7;
+  cursor: pointer;
 }
