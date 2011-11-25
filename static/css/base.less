@@ -5,6 +5,7 @@
 @fg2: #dc322f;
 @gray: #ccc;
 @blue: #eff5fd;
+@red: #dc3231;
 @top: 30px;
 @marker-width: 150px;
 @large: 16px;
@@ -32,6 +33,14 @@ label {
     padding: 0.5em;
     font-style: italic;
     font-family: @sans;
+}
+
+dt {
+    width: 10em;
+    text-align: right;
+    margin-top: 0.5em;
+    display: inline-block;
+    padding: 5px;
 }
 
 #toolbar {
@@ -82,7 +91,6 @@ label {
             opacity: 1;
         }
     }
-
 }
 
 #main {
@@ -92,17 +100,10 @@ label {
     z-index: 1;
 }
 
-dt {
-    width: 10em;
-    text-align: right;
-    margin-top: 0.5em;
-    display: inline-block;
-    padding: 5px;
+.hilight {
+    background-color: fadeout(@red, 85%);
+    .border-radius(4px, 4px, 4px, 4px);
 }
-
-dd {
-}
-
 
 #entries {
     .transition(margin-top, 0.2s);

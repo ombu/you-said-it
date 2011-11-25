@@ -121,10 +121,13 @@ Log = function(opts) {
     this.connectListeners();
 };
 
-Log.themeEntries = function(data) {
+Log.themeEntries = function(data, hilight) {
     var str = '', i = 0;
     for (l = data.length; i < l; i++) {
         data[i][2] = new Date(data[i][2] * 1000);
+        if(typeof hilight !== 'undefined') {
+            data[i][4] =  data[i][4].replace(hilight, '<span class="hilight">' + hilight + '</span>');
+        }
         str += dojo.replace("<dt title='{2}'>{3}</dt><dd tabindex='1'>{4}</dd>",
         data[i]);
     }
@@ -208,11 +211,11 @@ Search = function(opts) {
     dojo.connect(this.searchNode, 'onkeypress', this, function(evt) {
         if (evt.keyCode === dojo.keys.ENTER) {
             var fx = dojo.hitch(this, function(data) {
-                var listNode = Log.themeEntries(data);
+                var listNode = Log.themeEntries(data, this.searchNode.value);
                 dojo.empty(this.resultsNode);
-                dojo.place(listNode, this.resultsNode);
                 dojo.create('label', {innerHTML: data.length + ' results:'},
                     this.resultsNode);
+                dojo.place(listNode, this.resultsNode);
                 dojo.addClass(dojo.body(), 'search-results');
             });
             this.doSearch(this.searchNode.value).then(fx);
