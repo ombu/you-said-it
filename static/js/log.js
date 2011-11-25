@@ -4,11 +4,18 @@ dojo.require('dojo.window');
 
 dojo.addOnLoad(function() {
 
+    var search = new Search({
+        resultsNode: dojo.byId('search-results'),
+        searchNode: dojo.byId('search-box')
+    });
+
     var log = new Log({
         container: dojo.byId('entries'),
         paginator: InfinitePaginator,
-        storeUrl: '/api/log/'
+        search: search,
+        storeUrl: '/api/log'
     });
+
     log.load({callback: handle_viewport_resize});
 
     function handle_viewport_resize() {
@@ -22,18 +29,20 @@ dojo.addOnLoad(function() {
 /**
  *  Find the node that's in the middle of the viewport_height
  *  publishes scroll/top scroll/bottom
+ *  @constructor
  */
 InfinitePaginator = function(domNode, callbackTop, callbackBottom) {
     this.domNode = domNode;
     this.callbackTop = callbackTop;
     this.callbackBottom = callbackBottom;
-    this.scrollListener = dojo.connect(window, 'onscroll', this, this.handle_scroll);
+    this.scrollListener = dojo.connect(window, 'onscroll', this,
+            this.handle_scroll);
 };
 
 /**
  * Custom even to indicate paginator reached the start of the stack
  * Other classes can dojo.connect to this method
- * @event
+ * event
  */
 InfinitePaginator.prototype.onReachStart = function() {
 };
@@ -41,7 +50,7 @@ InfinitePaginator.prototype.onReachStart = function() {
 /**
  * Custom even to indicate paginator reached the end of the stack
  * Other classes can dojo.connect to this method
- * @event
+ * event
  */
 InfinitePaginator.prototype.onReachEnd = function() {
 };
@@ -97,20 +106,33 @@ getCenterNode = function(nodeList) {
  * opts.container
  *      container node for the log entries
  * opts.paginator
- *      the paginator object 
+ *      the paginator object
+ *  @constructor
  */
 Log = function(opts) {
     this.store = new dojo.store.JsonRest({target: opts.storeUrl});
     this.container = opts.container;
     this.paginator = new opts.paginator(this.container, this.loadDayBefore,
             this.loadDayBefore);
+    this.search = opts.search;
+    this.search.log = this;
     this.entries = [];
     this.listeners = [];
     this.connectListeners();
 };
 
+Log.themeEntries = function(data) {
+    var str = '', i = 0;
+    for (l = data.length; i < l; i++) {
+        data[i][2] = new Date(data[i][2] * 1000);
+        str += dojo.replace("<dt title='{2}'>{3}</dt><dd tabindex='1'>{4}</dd>",
+        data[i]);
+    }
+    return dojo.create('dl', {innerHTML: str});
+};
+
 Log.prototype.connectListeners = function() {
-    if(this.listeners.length) {
+    if (this.listeners.length) {
         return;
     }
     this.listeners.push(dojo.connect(window, 'onscroll', this,
@@ -119,13 +141,13 @@ Log.prototype.connectListeners = function() {
                 this.loadDayBefore));
     this.listeners.push(dojo.connect(this.paginator, 'onReachedEnd', this,
                 this.loadDayAfter));
-}
+};
 
 Log.prototype.disconnectListeners = function() {
-    while(this.listeners.length) {
+    while (this.listeners.length) {
         dojo.disconnect(this.listeners.pop());
     }
-}
+};
 
 Log.prototype.loadDayBefore = function() {
     this.load({pos: 'first'});
@@ -133,7 +155,7 @@ Log.prototype.loadDayBefore = function() {
 
 Log.prototype.loadDayAfter = function() {
     this.load({pos: 'last'});
-}
+};
 
 Log.prototype.load = function(obj) {
     var opts = {}, fx;
@@ -148,17 +170,16 @@ Log.prototype.load = function(obj) {
 };
 
 Log.prototype.handle_loaded = function(data, position) {
-    var str = '';
-    if(typeof position === 'undefined') {
+    var listNode;
+    if (typeof position === 'undefined') {
         position = 'last';
     }
-    for (var i = 0, l = data.length; i < l; i++) {
-        data[i][2] = new Date(data[i][2] * 1000);
-        str += dojo.replace("<dt title='{2}'>{3}</dt><dd>{4}</dd>",
-        data[i]);
+    if (position === 'replace') {
+        dojo.empty(this.container);
+        position = 'last';
     }
-    dojo.create('dl', {className: 'day ', innerHTML: str}, this.container,
-            position);
+    listNode = Log.themeEntries(data);
+    dojo.place(listNode, this.container, position);
     this.entries = dojo.query('dt', this.container);
     this.updateMarker();
     this.paginator.refresh();
@@ -166,7 +187,7 @@ Log.prototype.handle_loaded = function(data, position) {
 };
 
 Log.prototype.handle_scroll = function() {
-    var center_el, date
+    var center_el, date;
     center_el = getCenterNode(dojo.query('dt', this.container));
     if (center_el) {
         date = dojo.attr(center_el, 'title');
@@ -179,4 +200,38 @@ Log.prototype.updateMarker = function(data) {
         this.markerNode = dojo.create('div', {id: 'marker'}, dojo.body(),
                 'first');
     }
+};
+
+Search = function(opts) {
+    this.resultsNode = opts.resultsNode;
+    this.searchNode = opts.searchNode;
+    dojo.connect(this.searchNode, 'onkeypress', this, function(evt) {
+        if (evt.keyCode === dojo.keys.ENTER) {
+            var fx = dojo.hitch(this, function(data) {
+                var listNode = Log.themeEntries(data);
+                dojo.empty(this.resultsNode);
+                dojo.place(listNode, this.resultsNode);
+                dojo.create('label', {innerHTML: data.length + ' results:'},
+                    this.resultsNode);
+                dojo.addClass(dojo.body(), 'search-results');
+            });
+            this.doSearch(this.searchNode.value).then(fx);
+        }
+        if (evt.keyCode === dojo.keys.ESCAPE) {
+            this.clearSearch();
+        }
+    });
+};
+
+Search.prototype.clearSearch = function() {
+    dojo.byId('foo').focus();
+    dojo.removeClass(dojo.body(), 'search-results');
+    this.searchNode.value = '';
+};
+
+Search.prototype.doSearch = function(term) {
+    return dojo.xhrGet({
+        url: '/api/search?q=' + term,
+        handleAs: 'json'
+    });
 };

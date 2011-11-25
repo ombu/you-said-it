@@ -15,10 +15,16 @@ class Log(object):
         start = kwargs.get('start', date(now.year, now.month, now.day))
         start = date(2011, 11,4)
         end = kwargs.get('end', start + one_day)
-
-        # return
         keywords = {'start': start, 'end': end}
         return self.__getEntries(**keywords)
+
+    def search(self, **kwargs):
+        c = self.conn.cursor()
+        placeholders = (self.channel, '%'+kwargs['q']+'%')
+        query = """select * from logs where log_channel = ? 
+        and log_message like ?
+        """;
+        return c.execute(query, placeholders).fetchall()
 
     def __getEntries(self, **kwargs):
         c = self.conn.cursor()

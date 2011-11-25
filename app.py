@@ -11,9 +11,16 @@ class Api(object):
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def log(self, **kwargs):
+        return self.model().get(**kwargs)
+
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def search(self, **kwargs):
+        return self.model().search(**kwargs)
+
+    def model(self):
         config = cherrypy.request.app.config['/']
-        lm = LogModel(config['logs_dir'], config['channel']);
-        return lm.get(user="foo")
+        return LogModel(config['logs_dir'], config['channel'])
 
 class Log(object):
     @cherrypy.expose
