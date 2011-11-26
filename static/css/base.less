@@ -4,7 +4,7 @@
 @fg1: #b58900;
 @fg2: #dc322f;
 @gray: #ccc;
-@blue: #eff5fd;
+@blue: #e1ecfb;
 @red: #dc3231;
 @top: 30px;
 @marker-width: 150px;
@@ -87,7 +87,7 @@ dt {
        .border-radius(6px, 6px, 6px, 6px);
         opacity: 0.6;
         .transition(opacity, 0.2s);
-        &:hover, &:focus {
+        &:focus {
             opacity: 1;
         }
     }
@@ -116,6 +116,9 @@ dt {
         .box-shadow(2px 2px 7px #000);
         dt {
             color: @fg1;
+            &.current {
+                border: 1px solid red;
+            }
         }
         dd {
             margin-top: -1.6em;

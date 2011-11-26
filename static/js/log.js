@@ -14,7 +14,7 @@ dojo.addOnLoad(function() {
         paginator: InfinitePaginator,
         search: search,
         storeUrl: '/api/log'
-    });
+    })
 
     log.load({callback: handle_viewport_resize});
 
@@ -119,6 +119,8 @@ Log = function(opts) {
     this.entries = [];
     this.listeners = [];
     this.connectListeners();
+    this.currentDay = typeof opts.currentDay === 'object' ? opts.currentDay :
+        new Date();
 };
 
 Log.themeEntries = function(data, hilight) {
@@ -153,21 +155,28 @@ Log.prototype.disconnectListeners = function() {
 };
 
 Log.prototype.loadDayBefore = function() {
+    this.currentDay.setDate(this.currentDay.getDate()-1);
     this.load({pos: 'first'});
 };
 
 Log.prototype.loadDayAfter = function() {
+    if ((new Date()).toDateString() == this.currentDay.toDateString()) {
+        alert("Can't load a more recent date");
+        return false;
+    }
+    this.currentDay.setDate(this.currentDay.getDate()+1);
     this.load({pos: 'last'});
 };
 
-Log.prototype.load = function(obj) {
-    var opts = {}, fx;
-    opts = dojo.mixin(opts, obj);
-    fx = dojo.hitch(this, function(data) { this.handle_loaded(data, obj.pos) });
+Log.prototype.load = function(kwargs) {
+    var fx, timestamp, opts = dojo.mixin(opts, kwargs);
     this.disconnectListeners();
-    this.store.query().then(fx).then(function() {
-        if (typeof obj.callback === 'function') {
-            obj.callback();
+    fx = dojo.hitch(this, function(data) { this.handle_loaded(data, kwargs.pos) });
+    timestamp = Math.ceil(this.currentDay.getTime() / 1000);
+    console.log(this.currentDay, 'querying date');
+    this.store.query({day: timestamp}).then(fx).then(function() {
+        if (typeof kwargs.callback === 'function') {
+            kwargs.callback();
         }
     });
 };
@@ -193,6 +202,8 @@ Log.prototype.handle_scroll = function() {
     var center_el, date;
     center_el = getCenterNode(dojo.query('dt', this.container));
     if (center_el) {
+        // dojo.query('dt', this.container).removeClass('current');
+        // dojo.addClass(center_el, 'current');
         date = dojo.attr(center_el, 'title');
         this.markerNode.innerHTML = date;
     }

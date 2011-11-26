@@ -10,12 +10,11 @@ class Log(object):
 
     def get(self, **kwargs):
         # set start & end dates for query
-        now = datetime.now()
-        one_day = timedelta(days=1)
-        start = kwargs.get('start', date(now.year, now.month, now.day))
-        start = date(2011, 11,4)
-        end = kwargs.get('end', start + one_day)
-        keywords = {'start': start, 'end': end}
+        if kwargs['day']:
+            start = date.fromtimestamp(int(kwargs['day'])) 
+            one_day = timedelta(days=3)
+            end = kwargs.get('end', start + one_day)
+            keywords = {'start': start, 'end': end}
         return self.__getEntries(**keywords)
 
     def search(self, **kwargs):

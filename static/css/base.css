@@ -103,7 +103,7 @@ dt {
   -webkit-transition: opacity 0.2s ease-in;
   transition: opacity 0.2s ease-in;
 }
-#search input:hover, #search input:focus {
+#search input:focus {
   opacity: 1;
 }
 #main {
@@ -140,6 +140,9 @@ dt {
 }
 #entries dl dt {
   color: #b58900;
+}
+#entries dl dt.current {
+  border: 1px solid red;
 }
 #entries dl dd {
   margin-top: -1.6em;
@@ -185,14 +188,14 @@ body.search-results #entries {
   padding: 0.3em 1em;
 }
 #search-results dd:nth-child(4n+2) {
-  background-color: #eff5fd;
+  background-color: #e1ecfb;
 }
 #search-results dd:hover {
   cursor: hand;
 }
 #search-results dd:focus {
   outline: none;
-  background-color: #c2d9f7;
+  background-color: #b4d0f5;
 }
 #search-results .tools {
   padding: 1em;
