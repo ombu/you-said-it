@@ -1,6 +1,12 @@
 You Said It
 ===========
 
+## Setup
+
+- Place the recent bot logs in the logs directory
+- Downalod or synlink the Dojo Toolkit in static/js/dt (e.g. static/js/dt/dojo,
+  static/js/dt/dijit, etc.)
+
 *In progress*
 
 ## License

@@ -1,4 +1,4 @@
-define(['dojo/_base/kernel', 'dojo/window',
+define(['dojo', 'dojo/window',
         'dojo/store/JsonRest'],
         function(dojo, win, store) {
 
@@ -10,7 +10,6 @@ define(['dojo/_base/kernel', 'dojo/window',
     *      container node for the log entries
     * opts.paginator
     *      the paginator object
-    *  @constructor
     */
     var Log = function(opts) {
         this.store = new dojo.store.JsonRest({target: opts.storeUrl});
