@@ -142,7 +142,7 @@ dt {
   color: #b58900;
 }
 #entries dl dt.current {
-  border: 1px solid red;
+  color: #dc3231;
 }
 #entries dl dd {
   margin-top: -1.6em;

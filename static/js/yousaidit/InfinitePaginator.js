@@ -19,6 +19,7 @@ define(['dojo', 'dojo/window'], function(dojo, win) {
     * event
     */
     InfinitePaginator.prototype.onReachStart = function() {
+        // console.log('Reached top!');
     };
 
     /**
@@ -27,6 +28,7 @@ define(['dojo', 'dojo/window'], function(dojo, win) {
     * event
     */
     InfinitePaginator.prototype.onReachEnd = function() {
+        // console.log('Reached bottom!');
     };
 
     InfinitePaginator.prototype.handle_scroll = function() {
@@ -34,12 +36,12 @@ define(['dojo', 'dojo/window'], function(dojo, win) {
         reached_bottom = Boolean(window.pageYOffset + this.viewport_height -
                 this.nodeHeight > 0);
         if (reached_bottom) {
-            this.onReachedEnd();
+            this.onReachEnd();
         }
 
         reached_top = Boolean(window.pageYOffset == 0);
         if (reached_top) {
-            this.onReachedStart();
+            this.onReachStart();
         }
     };
 

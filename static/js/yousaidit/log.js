@@ -20,7 +20,6 @@ define(['dojo', 'dojo/window',
         this.search.log = this;
         this.entries = [];
         this.listeners = [];
-        this.connectListeners();
         this.currentDay = typeof opts.currentDay === 'object' ?
             opts.currentDay : new Date();
     }
@@ -46,24 +45,29 @@ define(['dojo', 'dojo/window',
         }
         this.listeners.push(dojo.connect(window, 'onscroll', this,
                     this.handle_scroll));
-        this.listeners.push(dojo.connect(this.paginator, 'onReachedStart', this,
+        this.listeners.push(dojo.connect(this.paginator, 'onReachStart', this,
                     this.loadDayBefore));
-        this.listeners.push(dojo.connect(this.paginator, 'onReachedEnd', this,
+        this.listeners.push(dojo.connect(this.paginator, 'onReachEnd', this,
                     this.loadDayAfter));
+        // console.log(this.listeners, 'Log: connected listeners');
     };
 
     Log.prototype.disconnectListeners = function() {
+        if (!this.listeners.length) return;
         while (this.listeners.length) {
             dojo.disconnect(this.listeners.pop());
         }
+        // console.log(this.listeners, 'Log: disconnecting listeners');
     };
 
     Log.prototype.loadDayBefore = function() {
+        this.disconnectListeners();
         this.currentDay.setDate(this.currentDay.getDate() - 1);
         this.load({pos: 'first'});
     };
 
     Log.prototype.loadDayAfter = function() {
+        this.disconnectListeners();
         if ((new Date()).toDateString() == this.currentDay.toDateString()) {
             alert("Can't load a more recent date");
             return false;
@@ -109,7 +113,8 @@ define(['dojo', 'dojo/window',
         center_el = getCenterNode(dojo.query('dt', this.container));
         if (center_el) {
             // dojo.query('dt', this.container).removeClass('current');
-            // dojo.addClass(center_el, 'current');
+            this.entries.removeClass('current');
+            dojo.addClass(center_el, 'current');
             date = dojo.attr(center_el, 'title');
             this.markerNode.innerHTML = date;
         }
