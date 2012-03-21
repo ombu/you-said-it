@@ -1,2 +1,9 @@
+# virtualenv
+.Python
+bin
+include
+lib
+
+# app
 logs/*.sqlite
 static/js/dt
