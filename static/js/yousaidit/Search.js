@@ -1,4 +1,4 @@
-define(['dojo'], function(dojo) {
+define(['dojo', 'yousaidit/Log'], function(dojo, Log) {
 
     /**
     * @class Search
