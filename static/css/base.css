@@ -12,7 +12,7 @@
 /* For image replacement */
 /* @todo Expand above gradient mixin to allow other non-linear styles */
 body {
-  background-image: url(/static/img/cotton-fabric-rough.jpg);
+  background-image: url(/static/img/bg-2.jpg);
   color: #839496;
   font-size: 80%;
   font-family: 'Menlo', 'Monaco', 'Lucida Grande', 'Helvetica Neue', 'Helvetica', 'sans';
@@ -97,7 +97,7 @@ dt {
   -moz-border-radius: 6px 6px 6px 6px;
   border-radius: 6px 6px 6px 6px;
   background-clip: padding-box;
-  opacity: 0.6;
+  opacity: 0.8;
   -moz-transition: opacity 0.2s ease-in;
   -webkit-transition: opacity 0.2s ease-in;
   transition: opacity 0.2s ease-in;
@@ -171,7 +171,7 @@ body.search-results #entries {
   max-height: 0em;
   overflow: auto;
   overflow-x: hidden;
-  padding-top: 1.8em;
+  padding-top: 1.4em;
   border-bottom: 3px solid #999999;
   -moz-transition: max-height 0.2s ease-in;
   -webkit-transition: max-height 0.2s ease-in;

@@ -1,5 +1,5 @@
-define(['dojo', 'yousaidit/Log', 'dojo/topic'], function(dojo,
-            Log, topic, domAttr) {
+define(['dojo', 'yousaidit/Log', 'dojo/topic', 'dojo/on'], function(dojo, Log,
+            topic, on) {
 
     /**
     * @class Search
@@ -7,19 +7,22 @@ define(['dojo', 'yousaidit/Log', 'dojo/topic'], function(dojo,
     var Search = function(opts) {
         this.resultsNode = opts.resultsNode;
         this.searchNode = opts.searchNode;
-        dojo.connect(this.searchNode, 'onkeypress', this, function(evt) {
-            if (evt.keyCode === dojo.keys.ENTER) {
-                var fx = dojo.hitch(this, this.addResults);
-                this.doSearch(this.searchNode.value).then(fx);
-            }
-            if (evt.keyCode === dojo.keys.ESCAPE) {
-                this.clearSearch();
-            }
-        });
+        this.searchNode.addEventListener('search', dojo.hitch(this,
+                this.handleSearchEvent), false);
+    };
+
+    Search.prototype.handleSearchEvent = function(e) {
+        if (e.target.value) {
+            var fx = dojo.hitch(this, this.addResults);
+            this.doSearch(e.target.value).then(fx);
+        }
+        else {
+            this.clearSearch();
+        }
     };
 
     Search.prototype.clearSearch = function() {
-        dojo.byId('foo').focus();
+        // dojo.byId('foo').focus();
         dojo.removeClass(dojo.body(), 'search-results');
         this.searchNode.value = '';
     };

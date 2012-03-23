@@ -27,6 +27,7 @@ class Root(object):
     api = Api()
 
     @cherrypy.expose
+    # @cherrypy.tools.caching(delay=3600)
     def index(self):
         tmpl = env.get_template('log.html')
         config = cherrypy.request.app.config['/']

@@ -5,14 +5,15 @@
 {% block content %}
 <div id="toolbar">You Said It!</div>
 <div id="search">
-    <select id="foo" tabindex="1" placeholder="Search">
+    <select id="foo" tabindex="1" placeholder="Search"
+        disabled="disabled">
         <option>Today</option>
         <option>Last Week</option>
         <option>Last Month</option>
         <option>Last Year</option>
         <option>Ever!</option>
     </select>
-    <input id="search-box" tabindex="1" type="text" placeholder="Search"></input>
+    <input id="search-box" tabindex="1" type="search" placeholder="Search"></input>
 </div>
 
 <div id="main">
