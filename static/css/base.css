@@ -70,11 +70,12 @@ dt {
   border-radius: 10px 10px 10px 10px;
   background-clip: padding-box;
   color: #666666;
-  min-height: 2em;
-  padding: 0.5em;
+  padding: 1em;
+  text-align: left;
   position: fixed;
-  top: 44%;
-  left: 20px;
+  top: 48.3%;
+  right: 5%;
+  width: 70em;
 }
 #search {
   position: fixed;
@@ -112,7 +113,7 @@ dt {
   z-index: 1;
 }
 .hilight {
-  background-color: rgba(220, 50, 49, 0.15000000000000002);
+  background-color: rgba(241, 90, 87, 0.15000000000000002);
   -webkit-background-clip: padding-box;
   -webkit-border-bottom-left-radius: 4px;
   -webkit-border-bottom-right-radius: 4px;
@@ -131,17 +132,40 @@ dt {
 }
 #entries dl {
   background-color: #002b36;
-  margin: 2em 0;
-  padding: 2em 2em 2em 1em;
+  margin: 4em 0;
+  padding: 1em 2em 1em 1em;
   -webkit-box-shadow: 2px 2px 7px #000000;
   -moz-box-shadow: 2px 2px 7px #000000;
   box-shadow: 2px 2px 7px #000000;
+  position: relative;
+}
+#entries dl:first-of-type {
+  margin-top: 5.5em;
+}
+#entries dl:before {
+  text-align: center;
+  -webkit-background-clip: padding-box;
+  -webkit-border-bottom-left-radius: 4px;
+  -webkit-border-bottom-right-radius: 4px;
+  -webkit-border-top-left-radius: 4px;
+  -webkit-border-top-right-radius: 4px;
+  -moz-background-clip: padding-box;
+  -moz-border-radius: 4px 4px 4px 4px;
+  border-radius: 4px 4px 4px 4px;
+  background-clip: padding-box;
+  color: #666666;
+  background-color: #ffffff;
+  padding: 0.5em 2em;
+  left: 40%;
+  position: absolute;
+  top: -3em;
+  content: "2012-03-10";
 }
 #entries dl dt {
   color: #b58900;
 }
 #entries dl dt.current {
-  color: #dc3231;
+  color: #f15a57;
 }
 #entries dl dd {
   margin-top: -1.6em;
@@ -152,14 +176,18 @@ dt {
   left: -99999px;
 }
 #entries .hilight {
-  color: red;
+  background-color: rgba(241, 90, 87, 0.5);
 }
 body.search-results #search-results {
+  position: fixed;
+  top: 2em;
+  z-index: 1;
   max-height: 12em;
   height: 12em;
+  overflow-y: auto;
 }
 body.search-results #entries {
-  margin-top: 12em;
+  margin-top: 15em;
 }
 #search-results {
   width: 60em;
@@ -169,8 +197,7 @@ body.search-results #entries {
   -moz-box-shadow: 2px 2px 2px #000000;
   box-shadow: 2px 2px 2px #000000;
   max-height: 0em;
-  overflow: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   padding-top: 1.4em;
   border-bottom: 3px solid #999999;
   -moz-transition: max-height 0.2s ease-in;

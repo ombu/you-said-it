@@ -1,6 +1,6 @@
 define(['dojo', 'dojo/window',
-        'dojo/store/JsonRest', 'dojo/topic'],
-        function(dojo, win, store, topic) {
+        'dojo/store/JsonRest', 'dojo/topic', 'dojo/date/locale'],
+        function(dojo, win, store, topic, locale) {
 
     /**
     * @class Log
@@ -12,6 +12,7 @@ define(['dojo', 'dojo/window',
     *      the paginator object
     */
     var Log = function(opts) {
+        this.app = opts.app;
         this.store = new dojo.store.JsonRest({target: opts.storeUrl});
         this.container = opts.container;
         this.paginator = new opts.paginator(this.container, this.loadDayBefore,
@@ -81,7 +82,8 @@ define(['dojo', 'dojo/window',
 
     Log.prototype.handleSearchResultSelect = function(date) {
         var fx = function() {
-            var el = dojo.query('dd[title=' + date + ']', dojo.byId('entries'))[0];
+            var el = dojo.query('dd[title=' + date + ']',
+                    dojo.byId('entries'))[0];
             console.log(el, 'foo');
             dojo.addClass(el, 'hilight');
             dojo.window.scrollIntoView(el);
@@ -138,8 +140,11 @@ define(['dojo', 'dojo/window',
             // dojo.query('dt', this.container).removeClass('current');
             this.entries.removeClass('current');
             dojo.addClass(center_el, 'current');
-            date = dojo.attr(center_el, 'title');
-            this.markerNode.innerHTML = date;
+            date = new Date(dojo.attr(center_el, 'title') * 1000);
+            this.markerNode.innerHTML = locale.format(date, {datePattern: 'y',
+                selector: 'date'}) + '<br/>';
+            this.markerNode.innerHTML += locale.format(date, {datePattern:
+                'EEE M/d,', timePattern: 'H:mm'});
         }
     };
 

@@ -5,7 +5,7 @@
 @fg2: #dc322f;
 @gray: #ccc;
 @blue: #e1ecfb;
-@red: #dc3231;
+@red: #F15A57;
 @white: #fff;
 @top: 30px;
 @marker-width: 150px;
@@ -67,12 +67,12 @@ dt {
     background-color: @white;
     .border-radius();
     color: darken(@gray, 40%);
-
-    min-height: 2em;
-    padding: 0.5em;
+    padding: 1em;
+    text-align: left;
     position: fixed;
-    top: 44%;
-    left: 20px;
+    top: 48.3%;
+    right: 5%;
+    width: 70em;
 }
 
 #search {
@@ -113,9 +113,24 @@ dt {
 
     dl {
         background-color: @bg;
-        margin: 2em 0;
-        padding: 2em 2em 2em 1em;
+        margin: 4em 0;
+        padding: 1em 2em 1em 1em;
         .box-shadow(2px 2px 7px #000);
+        position:relative;
+        &:first-of-type {
+            margin-top: 5.5em;
+        }
+        &:before {
+            text-align: center;
+            .border-radius(4px, 4px, 4px, 4px);
+            color: darken(@gray, 40%);
+            background-color: @white;
+            padding: 0.5em 2em;
+            left: 40%;
+            position:absolute;
+            top: -3em;
+            content: "2012-03-10";
+        }
         dt {
             color: @fg1;
             &.current {
@@ -134,17 +149,21 @@ dt {
     }
 
     .hilight {
-        color: red;
+    background-color: fadeout(@red, 50%);
     }
 }
 
 body.search-results #search-results {
+    position: fixed;
+    top: 2em;
+    z-index: 1;
     max-height: 12em;
     height: 12em;
+    overflow-y: auto;
 }
 
 body.search-results #entries {
-    margin-top: 12em;
+    margin-top: 15em;
 }
 
 #search-results {
@@ -154,8 +173,7 @@ body.search-results #entries {
     background-color: #fff;
     .box-shadow(2px 2px 2px #000);
     max-height: 0em;
-    overflow:auto;
-    overflow-x: hidden;
+    overflow: hidden;
     padding-top: 1.4em;
     border-bottom: @border-width solid darken(@gray, 20%);
     .transition(max-height, 0.2s);
