@@ -6,6 +6,7 @@
 @gray: #ccc;
 @blue: #e1ecfb;
 @red: #dc3231;
+@white: #fff;
 @top: 30px;
 @marker-width: 150px;
 @large: 16px;
@@ -62,14 +63,14 @@ dt {
 
 #marker {
     width: @marker-width;
-    background-color: rgba(20,20,20, 0.3);
+    background-color: @white;
     .border-radius();
-    text-shadow: 2px 3px 1px #000;
-    color: @gray;
-    position: fixed;
+    color: darken(@gray, 40%);
+
     min-height: 2em;
     padding: 0.5em;
-    top: 40%;
+    position: fixed;
+    top: 44%;
     left: 20px;
 }
 
@@ -131,6 +132,9 @@ dt {
         }
     }
 
+    .hilight {
+        color: red;
+    }
 }
 
 body.search-results #search-results {
@@ -150,6 +154,7 @@ body.search-results #entries {
     .box-shadow(2px 2px 2px #000);
     max-height: 0em;
     overflow:auto;
+    overflow-x: hidden;
     padding-top: 1.8em;
     border-bottom: @border-width solid darken(@gray, 20%);
     .transition(max-height, 0.2s);

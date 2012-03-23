@@ -1,4 +1,5 @@
-define(['dojo', 'yousaidit/Log'], function(dojo, Log) {
+define(['dojo', 'yousaidit/Log', 'dojo/topic'], function(dojo,
+            Log, topic, domAttr) {
 
     /**
     * @class Search
@@ -8,15 +9,7 @@ define(['dojo', 'yousaidit/Log'], function(dojo, Log) {
         this.searchNode = opts.searchNode;
         dojo.connect(this.searchNode, 'onkeypress', this, function(evt) {
             if (evt.keyCode === dojo.keys.ENTER) {
-                var fx = dojo.hitch(this, function(data) {
-                    var listNode = Log.themeEntries(data,
-                        this.searchNode.value);
-                    dojo.empty(this.resultsNode);
-                    dojo.create('label', {innerHTML: data.length + ' results:'},
-                        this.resultsNode);
-                    dojo.place(listNode, this.resultsNode);
-                    dojo.addClass(dojo.body(), 'search-results');
-                });
+                var fx = dojo.hitch(this, this.addResults);
                 this.doSearch(this.searchNode.value).then(fx);
             }
             if (evt.keyCode === dojo.keys.ESCAPE) {
@@ -36,6 +29,21 @@ define(['dojo', 'yousaidit/Log'], function(dojo, Log) {
             url: '/api/search?q=' + term,
             handleAs: 'json'
         });
+    };
+
+    Search.prototype.addResults = function(data) {
+        var listNode = Log.themeEntries(data,
+            this.searchNode.value);
+        dojo.empty(this.resultsNode);
+        dojo.create('label', {innerHTML: data.length + ' results:'},
+            this.resultsNode);
+        dojo.place(listNode, this.resultsNode);
+        dojo.addClass(dojo.body(), 'search-results');
+        dojo.query('dd', listNode).on('focusin', this.selectResult);
+    };
+
+    Search.prototype.selectResult = function(e) {
+        topic.publish('Search/resultSelected', dojo.attr(e.target, 'title'));
     };
 
     return Search;

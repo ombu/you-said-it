@@ -59,7 +59,7 @@ dt {
 }
 #marker {
   width: 150px;
-  background-color: rgba(20, 20, 20, 0.3);
+  background-color: #ffffff;
   -webkit-background-clip: padding-box;
   -webkit-border-bottom-left-radius: 10px;
   -webkit-border-bottom-right-radius: 10px;
@@ -69,12 +69,11 @@ dt {
   -moz-border-radius: 10px 10px 10px 10px;
   border-radius: 10px 10px 10px 10px;
   background-clip: padding-box;
-  text-shadow: 2px 3px 1px #000;
-  color: #cccccc;
-  position: fixed;
+  color: #666666;
   min-height: 2em;
   padding: 0.5em;
-  top: 40%;
+  position: fixed;
+  top: 44%;
   left: 20px;
 }
 #search {
@@ -152,6 +151,9 @@ dt {
   position: absolute;
   left: -99999px;
 }
+#entries .hilight {
+  color: red;
+}
 body.search-results #search-results {
   max-height: 12em;
   height: 12em;
@@ -168,6 +170,7 @@ body.search-results #entries {
   box-shadow: 2px 2px 2px #000000;
   max-height: 0em;
   overflow: auto;
+  overflow-x: hidden;
   padding-top: 1.8em;
   border-bottom: 3px solid #999999;
   -moz-transition: max-height 0.2s ease-in;
