@@ -84,7 +84,6 @@ define(['dojo', 'dojo/window',
         var fx = function() {
             var el = dojo.query('dd[title=' + date + ']',
                     dojo.byId('entries'))[0];
-            console.log(el, 'foo');
             dojo.addClass(el, 'hilight');
             dojo.window.scrollIntoView(el);
         };

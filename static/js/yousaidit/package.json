@@ -1,0 +1,10 @@
+{
+    "name": "yousadit",
+    "version":"0.1",
+    "directories": {
+        "lib": "."
+    },
+    "main": "main",
+    "description": "An IRC log browser",
+    "dojoBuild": "yousaidit.profile.js"
+}

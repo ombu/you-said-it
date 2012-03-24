@@ -7,3 +7,4 @@ lib
 # app
 logs/*.sqlite
 static/js/dt
+static/js/dist
