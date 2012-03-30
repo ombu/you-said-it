@@ -6,7 +6,6 @@ var profile = {
     optimize: 'closure',
     layerOptimize: 'closure',
     stripConsole: 'all',
-    selectorEngine: 'acme',
     staticHasFeatures: {
         // The trace & log APIs are used for debugging the loader, so we don’t
         // need them in the build
@@ -38,10 +37,8 @@ var profile = {
             // modules because they are one of the conditional dependencies in
             // app/main (the other being app/Dialog) but we don’t want to have
             // to make extra HTTP requests for such tiny files.
-            include: ['dojo/dojo', 'dojo/i18n', 'dojo/domReady',
-            'dojo/cldr/nls/en/gregorian',
-            'yousaidit/boot', 'yousaidit/main', 'yousaidit/Search',
-            'yousaidit/InfinitePaginator'],
+            // include: ['yousaidit/boot', 'yousaidit/main', 'yousaidit/Search',
+            // 'yousaidit/InfinitePaginator'],
 
             // By default, the build system will try to include dojo/main in the
             // built dojo/dojo layer, which adds a bunch of stuff we don’t want

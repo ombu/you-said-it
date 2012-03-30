@@ -1,5 +1,5 @@
-define(['dojo', 'dojo/has', 'require', 'dojo/date/locale'], function(dojo, has,
-            require, locale) {
+define(['dojo/_base/kernel', 'require'],
+        function(dojo, require) {
     var app = {};
 
     /**
@@ -51,10 +51,6 @@ define(['dojo', 'dojo/has', 'require', 'dojo/date/locale'], function(dojo, has,
             entries_height = dojo.position(dojo.byId('entries'), false).h;
         }
     });
-
-    app.formatDate = function(date) {
-        return locale.format(date, {datePattern: 'EEE MMM d,', timePattern: 'H:mm'});
-    }
 
     return app;
 });
