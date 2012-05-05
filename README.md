@@ -3,9 +3,16 @@ You Said It
 
 ## Setup
 
-- Place the recent bot logs in the logs directory
-- Downalod or synlink the Dojo Toolkit in static/js/dt (e.g. static/js/dt/dojo,
-  static/js/dt/dijit, etc.)
+- Place the bubot logs in the `logs` directory
+- Downalod or symlink the Dojo Toolkit version 1.7 in `static/js/dt` (e.g.
+  `static/js/dt/dojo`, `static/js/dt/dijit`, etc.).
+
+## Build Javascript
+
+To compile the Javascript into a single file for production use, run `build.sh`
+from the root of the repo, then change the refernce to `boot.js` in
+`templates/log.html` from: `/static/js/yousaidit/boot.js` to
+`/static/js/dist/yousaidit/boot.js`.
 
 *In progress*
 

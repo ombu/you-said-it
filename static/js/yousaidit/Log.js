@@ -15,32 +15,41 @@ define(['dojo', 'dojo/window',
         this.app = opts.app;
         this.store = new dojo.store.JsonRest({target: opts.storeUrl});
         this.container = opts.container;
-        this.paginator = new opts.paginator(this.container, this.loadDayBefore,
-                this.loadDayBefore);
-        this.search = opts.search;
-        this.search.log = this;
         this.entries = [];
         this.listeners = [];
+        this.search = opts.search;
+        this.search.log = this;
         this.currentDay = typeof opts.currentDay === 'object' ?
             // opts.currentDay : new Date();
             opts.currentDay : new Date('2012-03-21');
         topic.subscribe('Search/resultSelected', dojo.hitch(this,
                     this.handleSearchResultSelect));
+        this.paginator = new opts.paginator({
+            id: 'entries',
+            domNode: this.container,
+            onReachStart: dojo.hitch(this, this.loadDayBefore),
+            onReachEnd: dojo.hitch(this, this.loadDayAfter)
+        });
     }
 
     Log.themeEntries = function(data, hilight) {
-        var str = '', i = 0;
-        for (l = data.length; i < l; i++) {
-            //data[i][2] = new Date(data[i][2] * 1000);
-            if (typeof hilight !== 'undefined') {
-                data[i][4] = data[i][4].replace(hilight,
-                    '<span class="hilight">' + hilight + '</span>');
+        var str = '', i = 0, date;
+            date = this.currentDay; 
+        if (data.length) {
+            for (l = data.length; i < l; i++) {
+                if (typeof hilight !== 'undefined') {
+                    data[i][4] = data[i][4].replace(hilight,
+                        '<span class="hilight">' + hilight + '</span>');
+                }
+                str += dojo.replace("<dt title='{2}'>{3}</dt>" +
+                    "<dd id='{0}' tabindex='1' title='{2}'>{4}</dd>",
+                data[i]);
             }
-            str += dojo.replace("<dt title='{2}'>{3}</dt>" +
-                "<dd id='{0}' tabindex='1' title='{2}'>{4}</dd>",
-            data[i]);
         }
-        return dojo.create('dl', {innerHTML: str});
+        else {
+            str = '<p>Not much chatter today.</p>';
+        }
+        return dojo.create('dl', {innerHTML: str, title: date});
     };
 
     Log.prototype.connectListeners = function() {
@@ -57,6 +66,7 @@ define(['dojo', 'dojo/window',
     };
 
     Log.prototype.disconnectListeners = function() {
+
         if (!this.listeners.length) return;
         while (this.listeners.length) {
             dojo.disconnect(this.listeners.pop());
@@ -116,7 +126,7 @@ define(['dojo', 'dojo/window',
     };
 
     Log.prototype.handle_loaded = function(data, position) {
-        var listNode;
+        var listNode = Log.themeEntries(data);
         if (typeof position === 'undefined') {
             position = 'last';
         }
@@ -124,8 +134,14 @@ define(['dojo', 'dojo/window',
             dojo.empty(this.container);
             position = 'last';
         }
-        listNode = Log.themeEntries(data);
-        dojo.place(listNode, this.container, position);
+        this.paginator.refresh();
+        if (position === 'last') {
+            this.paginator.append(listNode);
+        }
+        else {
+            this.paginator.prepend(listNode);
+        }
+        //dojo.place(listNode, this.container, position);
         this.entries = dojo.query('dt', dojo.byId('entries'));
         this.updateMarker();
         this.paginator.refresh();

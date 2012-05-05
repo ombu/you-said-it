@@ -28,7 +28,8 @@ define(['dojo/_base/kernel', 'require'],
         }
     };
 
-    require(['./Search', './InfinitePaginator', './Log', 'dojo/domReady!'],
+    require(['./Search', 'InfiniteScroll/InfiniteScroll', './Log',
+            'dojo/domReady!'],
             function(Search, Paginator, Log) {
         var search = new Search({
             resultsNode: dojo.byId('search-results'),

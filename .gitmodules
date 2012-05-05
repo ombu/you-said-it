@@ -1,3 +1,6 @@
 [submodule "static/css/toolkit-less-tools"]
 	path = static/css/toolkit-less-tools
 	url = git@github.com:ombu/toolkit-less-tools.git
+[submodule "static/js/InfiniteScroll"]
+	path = static/js/InfiniteScroll
+	url = git@github.com:axolx/dojo-infinitescroll.git
