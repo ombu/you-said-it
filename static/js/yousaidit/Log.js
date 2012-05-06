@@ -28,13 +28,14 @@ define(['dojo', 'dojo/window',
             id: 'entries',
             domNode: this.container,
             onReachStart: dojo.hitch(this, this.loadDayBefore),
-            onReachEnd: dojo.hitch(this, this.loadDayAfter)
+            onReachEnd: dojo.hitch(this, this.loadDayAfter),
+            onScroll: dojo.hitch(this, this.handleScroll)
         });
     }
 
     Log.themeEntries = function(data, hilight) {
         var str = '', i = 0, date;
-            date = this.currentDay; 
+        date = this.currentDay;
         if (data.length) {
             for (l = data.length; i < l; i++) {
                 if (typeof hilight !== 'undefined') {
@@ -52,36 +53,12 @@ define(['dojo', 'dojo/window',
         return dojo.create('dl', {innerHTML: str, title: date});
     };
 
-    Log.prototype.connectListeners = function() {
-        if (this.listeners.length) {
-            return;
-        }
-        this.listeners.push(dojo.connect(window, 'onscroll', this,
-                    this.handle_scroll));
-        this.listeners.push(dojo.connect(this.paginator, 'onReachStart', this,
-                    this.loadDayBefore));
-        this.listeners.push(dojo.connect(this.paginator, 'onReachEnd', this,
-                    this.loadDayAfter));
-        // console.log(this.listeners, 'Log: connected listeners');
-    };
-
-    Log.prototype.disconnectListeners = function() {
-
-        if (!this.listeners.length) return;
-        while (this.listeners.length) {
-            dojo.disconnect(this.listeners.pop());
-        }
-        // console.log(this.listeners, 'Log: disconnecting listeners');
-    };
-
     Log.prototype.loadDayBefore = function() {
-        this.disconnectListeners();
         this.currentDay.setDate(this.currentDay.getDate() - 1);
         this.load({pos: 'first'});
     };
 
     Log.prototype.loadDayAfter = function() {
-        this.disconnectListeners();
         if ((new Date()).toDateString() == this.currentDay.toDateString()) {
             alert("Can't load a more recent date");
             return false;
@@ -112,7 +89,6 @@ define(['dojo', 'dojo/window',
             kwargs.pos = 'last';
         }
         var fx, timestamp, opts = dojo.mixin(opts, kwargs);
-        this.disconnectListeners();
         fx = dojo.hitch(this, function(data) {
             this.handle_loaded(data, kwargs.pos);
         });
@@ -145,10 +121,9 @@ define(['dojo', 'dojo/window',
         this.entries = dojo.query('dt', dojo.byId('entries'));
         this.updateMarker();
         this.paginator.refresh();
-        this.connectListeners();
     };
 
-    Log.prototype.handle_scroll = function() {
+    Log.prototype.handleScroll = function() {
         var center_el, date;
         center_el = getCenterNode(dojo.query('dt', this.container));
         if (center_el) {
