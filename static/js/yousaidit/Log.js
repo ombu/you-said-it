@@ -50,7 +50,7 @@ define(['dojo', 'dojo/window',
         else {
             str = '<p>Not much chatter today.</p>';
         }
-        return dojo.create('dl', {innerHTML: str, title: date});
+        return dojo.create('dl', {innerHTML: str});
     };
 
     Log.prototype.loadDayBefore = function() {

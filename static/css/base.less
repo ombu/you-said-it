@@ -23,6 +23,19 @@ body {
     font-size: 80%;
     font-family: @mono;
     overflow: hidden;
+    &.loading:before {
+        text-align: center;
+        color: @white;
+        background-color: @red;
+        padding: 0.3em 1em;
+        left: 0;
+        position:absolute;
+        top: 29px;
+        content: "Loading...";
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
 }
 
 a {
@@ -72,8 +85,9 @@ dt {
     text-align: left;
     position: fixed;
     top: 48.3%;
-    right: 7%;
-    width: 70em;
+    width: 9em;
+    left: 50%;
+    margin-left: -35em;
 }
 
 #search {
@@ -100,11 +114,12 @@ dt {
 }
 
 #main {
-    width: 60em;
-    height: 100%;
-    right: 7%;
     position: absolute;
-    z-index: 1;
+    right: 50%;
+    left: 50%;
+    width: 60em;
+    margin-left: -26em;
+    height: 100%;
 }
 
 .hilight {
@@ -124,17 +139,6 @@ dt {
         margin: 4em 0;
         padding: 1em 2em 1em 1em;
         .box-shadow(2px 2px 7px #000);
-        &:before {
-            text-align: center;
-            .border-radius(@radius, @radius, @radius, @radius);
-            color: darken(@gray, 40%);
-            background-color: @white;
-            padding: 0.5em 2em;
-            left: 40%;
-            position:absolute;
-            top: -3em;
-            content: attr(title);
-        }
         dt {
             color: @fg1;
             &.current {

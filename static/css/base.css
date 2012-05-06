@@ -19,6 +19,18 @@ body {
   font-family: 'Menlo', 'Monaco', 'Lucida Grande', 'Helvetica Neue', 'Helvetica', 'sans';
   overflow: hidden;
 }
+body.loading:before {
+  text-align: center;
+  color: #ffffff;
+  background-color: #f15a57;
+  padding: 0.3em 1em;
+  left: 0;
+  position: absolute;
+  top: 29px;
+  content: "Loading...";
+  text-transform: uppercase;
+  font-weight: bold;
+}
 a {
   color: #dc322f;
 }
@@ -76,8 +88,9 @@ dt {
   text-align: left;
   position: fixed;
   top: 48.3%;
-  right: 7%;
-  width: 70em;
+  width: 9em;
+  left: 50%;
+  margin-left: -35em;
 }
 #search {
   position: fixed;
@@ -114,11 +127,12 @@ dt {
   opacity: 1;
 }
 #main {
-  width: 60em;
-  height: 100%;
-  right: 7%;
   position: absolute;
-  z-index: 1;
+  right: 50%;
+  left: 50%;
+  width: 60em;
+  margin-left: -26em;
+  height: 100%;
 }
 .hilight {
   background-color: rgba(241, 90, 87, 0.15000000000000002);
@@ -148,25 +162,6 @@ dt {
   -webkit-box-shadow: 2px 2px 7px #000000;
   -moz-box-shadow: 2px 2px 7px #000000;
   box-shadow: 2px 2px 7px #000000;
-}
-#entries dl:before {
-  text-align: center;
-  -webkit-background-clip: padding-box;
-  -webkit-border-bottom-left-radius: 4px;
-  -webkit-border-bottom-right-radius: 4px;
-  -webkit-border-top-left-radius: 4px;
-  -webkit-border-top-right-radius: 4px;
-  -moz-background-clip: padding-box;
-  -moz-border-radius: 4px 4px 4px 4px;
-  border-radius: 4px 4px 4px 4px;
-  background-clip: padding-box;
-  color: #666666;
-  background-color: #ffffff;
-  padding: 0.5em 2em;
-  left: 40%;
-  position: absolute;
-  top: -3em;
-  content: attr(title);
 }
 #entries dl dt {
   color: #b58900;
