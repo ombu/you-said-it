@@ -31,6 +31,7 @@ define(['dojo/_base/kernel', 'require'],
     require(['./Search', 'InfiniteScroll/InfiniteScroll', './Log',
             'dojo/domReady!'],
             function(Search, Paginator, Log) {
+
         var search = new Search({
             resultsNode: dojo.byId('search-results'),
             searchNode: dojo.byId('search-box')
@@ -44,13 +45,6 @@ define(['dojo/_base/kernel', 'require'],
             app: app
         });
 
-        log.load({callback: handle_viewport_resize});
-
-        function handle_viewport_resize() {
-            var viewport_size, entries_height;
-            viewport_size = dojo.window.getBox().h;
-            entries_height = dojo.position(dojo.byId('entries'), false).h;
-        }
     });
 
     return app;

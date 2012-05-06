@@ -21,7 +21,7 @@ class Log(object):
         c = self.conn.cursor()
         placeholders = (self.channel, '%'+kwargs['q']+'%')
         query = """select * from logs where log_channel = ?
-        and log_message subject regexp \'?\'
+        and log_message like ?
         """;
         return c.execute(query, placeholders).fetchall()
 
