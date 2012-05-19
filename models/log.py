@@ -1,6 +1,7 @@
 import cherrypy
 import sqlite3
-from datetime import datetime, date, timedelta
+from datetime import datetime, timedelta
+from pytz import timezone
 
 class Log(object):
 
@@ -11,8 +12,8 @@ class Log(object):
     def get(self, **kwargs):
         # set start & end dates for query
         if kwargs['day']:
-            start = date.fromtimestamp(int(kwargs['day']))
-            one_day = timedelta(days=3)
+            start = parse_client_date(kwargs['day'])
+            one_day = timedelta(days=1)
             end = kwargs.get('end', start + one_day)
             keywords = {'start': start, 'end': end}
         return self.__getEntries(**keywords)
@@ -34,3 +35,12 @@ class Log(object):
         and log_timestamp < ?
         """;
         return c.execute(query, placeholders).fetchall()
+
+def parse_client_date(string):
+    """
+    Accepts client date format string (e.g. '2012-05-01') and returns a datetime
+    object with the app's Timezone (currently hardcoded to US/Pacific.
+    """
+    d = datetime.strptime(string, '%Y-%m-%d')
+    return d.replace(tzinfo=timezone('US/Pacific'))
+

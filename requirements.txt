@@ -1,3 +1,4 @@
 CherryPy==3.2.2
 Jinja2==2.6
+pytz==2012c
 wsgiref==0.1.2

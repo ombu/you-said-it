@@ -20,8 +20,7 @@ define(['dojo', 'dojo/window',
         this.search = opts.search;
         this.search.log = this;
         this.currentDay = typeof opts.currentDay === 'object' ?
-            // opts.currentDay : new Date();
-            opts.currentDay : new Date('2012-03-21');
+            opts.currentDay : new Date('2012-03-20 00:00:00');
         topic.subscribe('Search/resultSelected', dojo.hitch(this,
                     this.handleSearchResultSelect));
         this.paginator = new opts.paginator({
@@ -88,13 +87,14 @@ define(['dojo', 'dojo/window',
         if (!kwargs.hasOwnProperty('pos')) {
             kwargs.pos = 'last';
         }
-        var fx, timestamp, opts = dojo.mixin(opts, kwargs);
+        var fx, day, opts = dojo.mixin(opts, kwargs);
         fx = dojo.hitch(this, function(data) {
             this.handle_loaded(data, kwargs.pos);
         });
-        timestamp = Math.ceil(this.currentDay.getTime() / 1000);
+        //timestamp = Math.ceil(this.currentDay.getTime() / 1000);
+        day = dojo.date.locale.format(this.currentDay, {datePattern: 'yyyy-MM-dd' , selector: 'date'})
         console.log(this.currentDay, 'querying date');
-        this.store.query({day: timestamp}).then(fx).then(function() {
+        this.store.query({day: day}).then(fx).then(function() {
             if (typeof kwargs.callback === 'function') {
                 kwargs.callback();
             }

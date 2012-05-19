@@ -154,6 +154,7 @@ dt {
   top: 20px;
   bottom: 20px;
   overflow: auto;
+  width: 100%;
 }
 #entries dl {
   background-color: #002b36;
