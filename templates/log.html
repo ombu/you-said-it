@@ -30,12 +30,16 @@
 {% endblock %}
 
 {% block js %}
-<script data-dojo-config="async: 1, tlmSiblingOfDojo: 0, isDebug: 1"
-        src="/static/js/dt/dojo/dojo.js" defer></script>
 <!-- <script data-dojo-config="async: 1, tlmSiblingOfDojo: 0, isDebug: 0" -->
 <!--         src="/static/js/dist/yousaidit/app.js" defer></script> -->
 
-<!-- Load the application. -->
-<!-- <script src="/static/js/dist/yousaidit/boot.js" defer></script> -->
+<!-- dev js -->
+<script data-dojo-config="async:1, tlmSiblingOfDojo: 0, isDebug: 0"
+        src="/static/js/dt/dojo/dojo.js" defer></script>
 <script src="/static/js/yousaidit/boot.js" defer></script>
+
+<!-- built js -->
+<!-- <script data-dojo-config="async:1, tlmSiblingOfDojo: 0, isDebug: 0" -->
+<!--         src="/static/js/dist/dojo/dojo.js" defer></script> -->
+<!-- <script src="/static/js/dist/yousaidit/boot.js" defer></script> -->
 {% endblock %}

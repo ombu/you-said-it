@@ -110,24 +110,25 @@ define(['dojo', 'dojo/window',
             dojo.empty(this.container);
             position = 'last';
         }
-        this.paginator.refresh();
+
+        // Callback to update Log after content has been appended/prepended
+        var fx = dojo.hitch(this, function() {
+            this.entries = dojo.query('dt', dojo.byId('entries'));
+            this.updateMarker();
+        });
+
         if (position === 'last') {
-            this.paginator.append(listNode);
+            this.paginator.append(listNode).then(fx);
         }
         else {
-            this.paginator.prepend(listNode);
+            this.paginator.prepend(listNode).then(fx);
         }
-        //dojo.place(listNode, this.container, position);
-        this.entries = dojo.query('dt', dojo.byId('entries'));
-        this.updateMarker();
-        this.paginator.refresh();
     };
 
     Log.prototype.handleScroll = function() {
         var center_el, date;
         center_el = getCenterNode(dojo.query('dt', this.container));
         if (center_el) {
-            // dojo.query('dt', this.container).removeClass('current');
             this.entries.removeClass('current');
             dojo.addClass(center_el, 'current');
             date = new Date(dojo.attr(center_el, 'title') * 1000);
