@@ -99,7 +99,7 @@ define(['dojo', 'dojo/window',
 
     Log.prototype.handle_failed = function(error, position) {
 
-        var d = locale.format(this.currentDay, {datePattern: 'yyyy-MM-dd' , selector: 'date'})
+        var d = locale.format(this.currentDay, {datePattern: 'yyyy-MM-dd (EEE)' , selector: 'date'})
         var msg = dojo.create('dl', {innerHTML: '<p>Not much chatter on ' + d + '.</p>'});
         this._handle_loaded_and_failed(msg, position);
     }
@@ -139,6 +139,7 @@ define(['dojo', 'dojo/window',
             this.entries.removeClass('current');
             dojo.addClass(center_el, 'current');
             date = new Date(dojo.attr(center_el, 'title') * 1000);
+            this.markerNode.style.display = 'block';
             this.markerNode.innerHTML = locale.format(date, {datePattern: 'y',
                 selector: 'date'}) + '<br/>';
             this.markerNode.innerHTML += locale.format(date, {datePattern:
@@ -150,6 +151,7 @@ define(['dojo', 'dojo/window',
         if (dojo.query('#marker').length == 0) {
             this.markerNode = dojo.create('div', {id: 'marker'}, dojo.body(),
                     'last');
+            this.markerNode.style.display = 'none';
         }
     };
 
