@@ -20,7 +20,7 @@ define(['dojo', 'dojo/window',
         this.search = opts.search;
         this.search.log = this;
         this.currentDay = typeof opts.currentDay === 'object' ?
-            opts.currentDay : new Date('2012-03-20 00:00:00');
+            opts.currentDay : new Date();
         topic.subscribe('Search/resultSelected', dojo.hitch(this,
                     this.handleSearchResultSelect));
         this.paginator = new opts.paginator({
@@ -35,20 +35,18 @@ define(['dojo', 'dojo/window',
     Log.themeEntries = function(data, hilight) {
         var str = '', i = 0, date;
         date = this.currentDay;
-        if (data.length) {
-            for (l = data.length; i < l; i++) {
-                if (typeof hilight !== 'undefined') {
-                    data[i][4] = data[i][4].replace(hilight,
-                        '<span class="hilight">' + hilight + '</span>');
-                }
-                str += dojo.replace("<dt title='{2}'>{3}</dt>" +
-                    "<dd id='{0}' tabindex='1' title='{2}'>{4}</dd>",
-                data[i]);
+        for (l = data.length; i < l; i++) {
+            if (typeof hilight !== 'undefined') {
+                data[i][4] = data[i][4].replace(hilight,
+                    '<span class="hilight">' + hilight + '</span>');
             }
+            str += dojo.replace("<dt title='{2}'>{3}</dt>" +
+                "<dd id='{0}' tabindex='1' title='{2}'>{4}</dd>",
+            data[i]);
         }
-        else {
-            str = '<p>Not much chatter today.</p>';
-        }
+        // else {
+        //     str = '<p>Not much chatter today.</p>';
+        // }
         return dojo.create('dl', {innerHTML: str});
     };
 
@@ -58,10 +56,6 @@ define(['dojo', 'dojo/window',
     };
 
     Log.prototype.loadDayAfter = function() {
-        if ((new Date()).toDateString() == this.currentDay.toDateString()) {
-            alert("Can't load a more recent date");
-            return false;
-        }
         this.currentDay.setDate(this.currentDay.getDate() + 1);
         this.load({pos: 'last'});
     };
@@ -87,22 +81,35 @@ define(['dojo', 'dojo/window',
         if (!kwargs.hasOwnProperty('pos')) {
             kwargs.pos = 'last';
         }
-        var fx, day, opts = dojo.mixin(opts, kwargs);
-        fx = dojo.hitch(this, function(data) {
+        var success_callback, error_callback, day, opts = dojo.mixin(opts, kwargs);
+        success_callback = dojo.hitch(this, function(data) {
             this.handle_loaded(data, kwargs.pos);
         });
-        //timestamp = Math.ceil(this.currentDay.getTime() / 1000);
-        day = dojo.date.locale.format(this.currentDay, {datePattern: 'yyyy-MM-dd' , selector: 'date'})
+        error_callback = dojo.hitch(this, function(error) {
+            this.handle_failed(error, kwargs.pos);
+        });
+        day = locale.format(this.currentDay, {datePattern: 'yyyy-MM-dd' , selector: 'date'})
         console.log(this.currentDay, 'querying date');
-        this.store.query({day: day}).then(fx).then(function() {
+        this.store.query({day: day}).then(success_callback, error_callback).then(function() {
             if (typeof kwargs.callback === 'function') {
                 kwargs.callback();
             }
         });
     };
 
+    Log.prototype.handle_failed = function(error, position) {
+
+        var d = locale.format(this.currentDay, {datePattern: 'yyyy-MM-dd' , selector: 'date'})
+        var msg = dojo.create('dl', {innerHTML: '<p>Not much chatter on ' + d + '.</p>'});
+        this._handle_loaded_and_failed(msg, position);
+    }
+
     Log.prototype.handle_loaded = function(data, position) {
-        var listNode = Log.themeEntries(data);
+        var domNode = Log.themeEntries(data);
+        this._handle_loaded_and_failed(domNode, position);
+    }
+
+    Log.prototype._handle_loaded_and_failed = function(domNode, position) {
         if (typeof position === 'undefined') {
             position = 'last';
         }
@@ -118,10 +125,10 @@ define(['dojo', 'dojo/window',
         });
 
         if (position === 'last') {
-            this.paginator.append(listNode).then(fx);
+            this.paginator.append(domNode).then(fx);
         }
         else {
-            this.paginator.prepend(listNode).then(fx);
+            this.paginator.prepend(domNode).then(fx);
         }
     };
 

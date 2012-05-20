@@ -11,7 +11,11 @@ class Api(object):
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def log(self, **kwargs):
-        return self._model().get(**kwargs)
+        entries = self._model().get(**kwargs)
+        if len(entries):
+            return entries
+        else:
+            raise cherrypy._cperror.NotFound
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
@@ -28,9 +32,9 @@ class Root(object):
 
     @cherrypy.expose
     # @cherrypy.tools.caching(delay=3600)
-    def index(self):
+    def index(self,day=False):
         tmpl = env.get_template('log.html')
         config = cherrypy.request.app.config['/']
-        return tmpl.render()
+        return tmpl.render(day=day)
 
 cherrypy.quickstart(Root(),config='config.ini')

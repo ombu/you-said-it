@@ -29,19 +29,26 @@ define(['dojo/_base/kernel', 'require'],
     };
 
     require(['./Search', 'InfiniteScroll/InfiniteScroll', './Log',
-            'dojo/domReady!'],
-            function(Search, Paginator, Log) {
+            'dojo/io-query', 'dojo/domReady!'],
+            function(Search, Paginator, Log, ioQuery) {
 
-        var search = new Search({
+        var queryString, search, log;
+
+        search = new Search({
             resultsNode: dojo.byId('search-results'),
             searchNode: dojo.byId('search-box')
         });
 
-        var log = new Log({
+        queryString =
+            ioQuery.queryToObject(window.location.search.substring(1));
+
+        log = new Log({
             container: dojo.byId('entries'),
             paginator: Paginator,
             search: search,
             storeUrl: '/api/log',
+            currentDay: queryString.day ? new Date(queryString.day) :
+                new Date(),
             app: app
         });
 
